@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Puzzle of Mirdud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Puzzle of Mirdut</h1>
+    <div id="score-text">Skor: 0 / 3</div>
+
+    <div id="wrapper">
+        <div id="puzzle-container"></div>
+    </div>
+
+    <div>
+        <button onclick="toggleHint()">Lihat Gambar Asli</button>
+    </div>
+
+    <!-- Modal selesai -->
+    <div id="modal">
+        <div id="modal-content">
+            <h2 id="modal-title">Yeay! Puzzle Selesai.</h2>
+            <p id="modal-message">Kamu berhasil menyelesaikan puzzle ini.</p>
+            <button id="modal-button" onclick="nextPuzzle()">Lanjutkan</button>
+        </div>
+    </div>
+
+    <!-- Modal gambar asli -->
+    <div id="hint-modal">
+        <div id="hint-modal-content">
+            <img src="" alt="Gambar Asli" />
+            <button onclick="closeHint()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Gambar tersembunyi -->
+    <img id="hidden-image" />
+
+    <script src="index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    color: #d63384;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+}
+
+#score-text {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+#wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 2px solid #d63384;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+#puzzle-container {
+    display: grid;
+    gap: 2px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.puzzle-piece {
+    background-repeat: no-repeat;
+    border: 1px solid #f8c8dc;
+    box-sizing: border-box;
+    cursor: grab;
+    background-size: cover;
+    border-radius: 4px;
+    width: 100%;
+}
+
+#modal,
+#hint-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+#modal {
+    background: rgba(214, 51, 132, 0.4);
+}
+
+#modal-content {
+    background: white;
+    padding: 20px;
+    border: 2px solid #d63384;
+    border-radius: 8px;
+    color: #d63384;
+    font-weight: bold;
+    max-width: 90%;
+}
+
+#hint-modal {
+    background: rgba(255, 192, 203, 0.7);
+    z-index: 1000;
+}
+
+#hint-modal-content {
+    background: white;
+    border: 2px solid #d63384;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#hint-modal-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #f8c8dc;
+}
+
+#hint-modal-content button {
+    margin-top: 10px;
+}
+
+button {
+    margin: 10px 5px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: 2px solid #d63384;
+    background-color: #fff;
+    color: #d63384;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #d63384;
+    color: #fff;
+}
+
+#hidden-image {
+    display: none;
+}
