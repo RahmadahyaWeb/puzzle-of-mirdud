@@ -6,7 +6,6 @@ const imagePaths = [
 
 let currentImageIndex = 0;
 let score = 0;
-
 let imagePath = imagePaths[currentImageIndex];
 
 const container = document.getElementById('puzzle-container');
@@ -14,15 +13,16 @@ const wrapper = document.getElementById('wrapper');
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modal-title');
 const modalMessage = document.getElementById('modal-message');
-const modalButton = document.getElementById('modal-button');
 const hintModal = document.getElementById('hint-modal');
 const hintImage = document.querySelector('#hint-modal-content img');
 const img = document.getElementById('hidden-image');
 const scoreText = document.getElementById('score-text');
+const modalButton = document.getElementById('modal-button');
 
 const rows = 3;
 const cols = 3;
 let correctOrder = [];
+let selectedPiece = null;
 
 window.onload = () => {
     loadImage(imagePaths[currentImageIndex]);
@@ -42,6 +42,7 @@ function startPuzzle() {
     modal.style.display = 'none';
     hintModal.style.display = 'none';
     container.innerHTML = '';
+    selectedPiece = null;
 
     const aspectRatio = img.naturalWidth / img.naturalHeight;
     const containerWidth = wrapper.clientWidth;
@@ -63,7 +64,6 @@ function startPuzzle() {
             const piece = document.createElement('div');
             piece.classList.add('puzzle-piece');
             piece.setAttribute('data-index', index);
-            piece.setAttribute('draggable', 'true');
 
             piece.style.height = pieceHeight + 'px';
             piece.style.backgroundImage = `url(${imagePath})`;
@@ -77,7 +77,35 @@ function startPuzzle() {
 
     shuffleArray(pieces);
     pieces.forEach(p => container.appendChild(p));
-    enableDragAndDrop();
+    enableTapToSwap();
+}
+
+function enableTapToSwap() {
+    const pieces = container.querySelectorAll('.puzzle-piece');
+    pieces.forEach(piece => {
+        piece.addEventListener('click', () => {
+            if (!selectedPiece) {
+                selectedPiece = piece;
+                piece.style.outline = '2px solid #d63384';
+            } else if (selectedPiece === piece) {
+                selectedPiece.style.outline = 'none';
+                selectedPiece = null;
+            } else {
+                swapPieces(selectedPiece, piece);
+                selectedPiece.style.outline = 'none';
+                selectedPiece = null;
+                setTimeout(checkPuzzle, 100);
+            }
+        });
+    });
+}
+
+function swapPieces(piece1, piece2) {
+    const temp = document.createElement('div');
+    container.insertBefore(temp, piece1);
+    container.insertBefore(piece1, piece2);
+    container.insertBefore(piece2, temp);
+    container.removeChild(temp);
 }
 
 function nextPuzzle() {
@@ -86,11 +114,12 @@ function nextPuzzle() {
     if (score >= imagePaths.length) {
         score = 0;
         currentImageIndex = 0;
+        updateScoreText();
+        modalButton.innerText = 'Lanjutkan';
     } else {
         currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
     }
 
-    updateScoreText();
     loadImage(imagePaths[currentImageIndex]);
 }
 
@@ -100,33 +129,6 @@ function toggleHint() {
 
 function closeHint() {
     hintModal.style.display = 'none';
-}
-
-function enableDragAndDrop() {
-    const pieces = container.querySelectorAll('.puzzle-piece');
-    let dragged;
-
-    pieces.forEach(piece => {
-        piece.addEventListener('dragstart', (e) => {
-            dragged = e.target;
-        });
-
-        piece.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
-
-        piece.addEventListener('drop', (e) => {
-            e.preventDefault();
-            if (e.target.classList.contains('puzzle-piece')) {
-                const temp = document.createElement('div');
-                container.insertBefore(temp, e.target);
-                container.insertBefore(e.target, dragged);
-                container.insertBefore(dragged, temp);
-                container.removeChild(temp);
-                setTimeout(checkPuzzle, 100);
-            }
-        });
-    });
 }
 
 function checkPuzzle() {
