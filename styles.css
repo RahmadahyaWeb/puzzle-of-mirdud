@@ -38,14 +38,15 @@ h1 {
     background-repeat: no-repeat;
     border: 1px solid #f8c8dc;
     box-sizing: border-box;
-    cursor: grab;
+    cursor: pointer;
     background-size: cover;
     border-radius: 4px;
     width: 100%;
 }
 
 #modal,
-#hint-modal {
+#hint-modal,
+#loading {
     position: fixed;
     top: 0;
     left: 0;
@@ -100,6 +101,14 @@ h1 {
     margin-top: 10px;
 }
 
+#loading {
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #d63384;
+    z-index: 2000;
+}
+
 button {
     margin: 10px 5px;
     padding: 10px 16px;
@@ -115,8 +124,4 @@ button {
 button:hover {
     background-color: #d63384;
     color: #fff;
-}
-
-#hidden-image {
-    display: none;
 }

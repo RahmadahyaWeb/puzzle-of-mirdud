@@ -1,9 +1,4 @@
-const imagePaths = [
-    'img/puzzle1.JPG',
-    'img/puzzle2.JPG',
-    'img/puzzle3.JPG'
-];
-
+const imagePaths = ['img/puzzle1.JPG', 'img/puzzle2.JPG', 'img/puzzle3.JPG'];
 let currentImageIndex = 0;
 let score = 0;
 let imagePath = imagePaths[currentImageIndex];
@@ -13,11 +8,12 @@ const wrapper = document.getElementById('wrapper');
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modal-title');
 const modalMessage = document.getElementById('modal-message');
+const modalButton = document.getElementById('modal-button');
 const hintModal = document.getElementById('hint-modal');
 const hintImage = document.querySelector('#hint-modal-content img');
 const img = document.getElementById('hidden-image');
 const scoreText = document.getElementById('score-text');
-const modalButton = document.getElementById('modal-button');
+const loading = document.getElementById('loading');
 
 const rows = 3;
 const cols = 3;
@@ -30,13 +26,13 @@ window.onload = () => {
 
 function loadImage(path) {
     imagePath = path;
-    img.src = path;
     hintImage.src = path;
+    img.onload = () => {
+        loading.style.display = 'none';
+        startPuzzle();
+    };
+    img.src = path;
 }
-
-img.onload = () => {
-    startPuzzle();
-};
 
 function startPuzzle() {
     modal.style.display = 'none';
@@ -80,6 +76,22 @@ function startPuzzle() {
     enableTapToSwap();
 }
 
+function nextPuzzle() {
+    modal.style.display = 'none';
+    loading.style.display = 'flex';
+
+    if (score >= imagePaths.length) {
+        score = 0;
+        currentImageIndex = 0;
+        updateScoreText();
+        modalButton.innerText = 'Lanjutkan';
+    } else {
+        currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+    }
+
+    loadImage(imagePaths[currentImageIndex]);
+}
+
 function enableTapToSwap() {
     const pieces = container.querySelectorAll('.puzzle-piece');
     pieces.forEach(piece => {
@@ -108,29 +120,6 @@ function swapPieces(piece1, piece2) {
     container.removeChild(temp);
 }
 
-function nextPuzzle() {
-    modal.style.display = 'none';
-
-    if (score >= imagePaths.length) {
-        score = 0;
-        currentImageIndex = 0;
-        updateScoreText();
-        modalButton.innerText = 'Lanjutkan';
-    } else {
-        currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
-    }
-
-    loadImage(imagePaths[currentImageIndex]);
-}
-
-function toggleHint() {
-    hintModal.style.display = 'flex';
-}
-
-function closeHint() {
-    hintModal.style.display = 'none';
-}
-
 function checkPuzzle() {
     const current = [...container.children].map(p => +p.getAttribute('data-index'));
     const isCorrect = current.every((val, idx) => val === correctOrder[idx]);
@@ -150,6 +139,14 @@ function checkPuzzle() {
 
         modal.style.display = 'flex';
     }
+}
+
+function toggleHint() {
+    hintModal.style.display = 'flex';
+}
+
+function closeHint() {
+    hintModal.style.display = 'none';
 }
 
 function updateScoreText() {
